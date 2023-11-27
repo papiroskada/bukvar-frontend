@@ -2,11 +2,11 @@
   <div>
     <footer class="footer custom-footer fixed-bottom text-center py-3">
       <div class="container">
-        <a href="" class="contact-icon"><i class="fa-brands fa-viber"></i></a>
-        <a href="" class="contact-icon"
+        <a href="viber://chat?number=+380509431722" class="contact-icon"><i class="fa-brands fa-viber"></i></a>
+        <a href="mailto:dunchasid@gmail.com" class="contact-icon"
           ><i class="fa-regular fa-envelope"></i
         ></a>
-        <a href="" class="contact-icon"
+        <a href="https://t.me/dashushak" class="contact-icon"
           ><i class="fa-brands fa-telegram"></i
         ></a>
       </div>
