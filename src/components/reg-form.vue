@@ -34,6 +34,19 @@
               <span class="form-text">{{ errors.email }}</span>
             </div>
             <div class="mb-3">
+              <label for="username" class="form-label">Юзернейм</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                aria-describedby="usernameHelp"
+                v-model="formData.username"
+                @input="validateField('username')"
+                placeholder="anton228"
+              />
+              <span class="form-text">{{ errors.username }}</span>
+            </div>
+            <div class="mb-3">
               <label for="name" class="form-label">Ім'я</label>
               <input
                 type="text"
@@ -186,6 +199,7 @@ export default {
     return {
       formData: {
         email: "",
+        username: "",
         name: "",
         surname: "",
         middleName: "",
@@ -224,6 +238,7 @@ export default {
       this.errors[fieldName] = "";
 
       const validationRules = {
+        username: this.validateUsername,
         name: this.validateName,
         surname: this.validateName,
         middleName: this.validateName,
@@ -248,6 +263,16 @@ export default {
         this.errors[
           fieldName
         ] = `Поле повинно бути написане українською та починатися з великої літери.`;
+      } else {
+        this.errors[fieldName] = "";
+      }
+    },
+    validateUsername(fieldName) {
+      const usernameRegex = /^[a-zA-Z0-9]+$/;
+      if (!usernameRegex.test(this.formData[fieldName])) {
+        this.errors[
+          fieldName
+        ] = `Поле повинно бути написане англійською та може містити цифри.`;
       } else {
         this.errors[fieldName] = "";
       }
@@ -323,6 +348,7 @@ export default {
       this.isFormValid = false;
       this.formData = {
         email: "",
+        username: "",
         name: "",
         surname: "",
         middleName: "",
