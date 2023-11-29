@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Header v-if="!isRegistrationPage" />
+    <Header v-if="!isAuthPage" />
     <router-view></router-view>
-    <Footer v-if="!isRegistrationPage" />
+    <Footer v-if="!isAuthPage" />
   </div>
 </template>
 
@@ -15,21 +15,19 @@ export default defineComponent({
   components: { Footer, Header },
   data() {
     return {
-      isRegistrationPage: false,
+      isAuthPage: false,
     };
   },
   watch: {
     $route(to) {
-      // Перевірка, чи поточний маршрут є сторінкою реєстрації
-      this.isRegistrationPage = to.name === "Registration";
+      this.isAuthPage = to.name === "Registration" || to.name === "Login";
     },
   },
 });
 </script>
 
-
 <style>
 body {
-  font-family: 'IBM Plex Serif', serif !important;
+  font-family: "IBM Plex Serif", serif !important;
 }
 </style>

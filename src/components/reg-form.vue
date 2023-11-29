@@ -19,7 +19,7 @@
                 accept="image/*"
                 @change="handleAvatarChange"
               />
-              <label class="input-group-text" for="avatar">Завантажити</label>
+              <label class="input-group-text" for="avatar">Download</label>
             </div>
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
@@ -34,7 +34,7 @@
               <span class="form-text">{{ errors.email }}</span>
             </div>
             <div class="mb-3">
-              <label for="username" class="form-label">Юзернейм</label>
+              <label for="username" class="form-label">Username</label>
               <input
                 type="text"
                 class="form-control"
@@ -47,7 +47,7 @@
               <span class="form-text">{{ errors.username }}</span>
             </div>
             <div class="mb-3">
-              <label for="name" class="form-label">Ім'я</label>
+              <label for="name" class="form-label">First name</label>
               <input
                 type="text"
                 class="form-control"
@@ -60,7 +60,7 @@
               <span class="form-text">{{ errors.name }}</span>
             </div>
             <div class="mb-3">
-              <label for="surname" class="form-label">Призвіще</label>
+              <label for="surname" class="form-label">Second name</label>
               <input
                 type="text"
                 class="form-control"
@@ -73,7 +73,7 @@
               <span class="form-text">{{ errors.surname }}</span>
             </div>
             <div class="mb-3">
-              <label for="middleName" class="form-label">По батькові</label>
+              <label for="middleName" class="form-label">Middle name</label>
               <input
                 type="text"
                 class="form-control"
@@ -86,7 +86,7 @@
               <span class="form-text">{{ errors.middleName }}</span>
             </div>
             <div class="mb-3">
-              <label for="cellphone" class="form-label">Номер телефону</label>
+              <label for="cellphone" class="form-label">Phone number</label>
               <input
                 type="tel"
                 class="form-control"
@@ -100,7 +100,7 @@
               <span class="form-text">{{ errors.cellphone }}</span>
             </div>
             <div class="mb-3">
-              <label for="birthDate" class="form-label">Дата народження</label>
+              <label for="birthDate" class="form-label">Birth date</label>
               <input
                 type="date"
                 class="form-control"
@@ -112,7 +112,7 @@
               <span class="form-text">{{ errors.birthDate }}</span>
             </div>
             <div class="mb-3">
-              <label for="password" class="form-label">Пароль</label>
+              <label for="password" class="form-label">Password</label>
               <input
                 type="password"
                 class="form-control"
@@ -125,7 +125,7 @@
               <span class="form-text">{{ errors.password }}</span>
             </div>
             <div class="mb-3">
-              <label for="passwordConfirm" class="form-label">Пароль</label>
+              <label for="passwordConfirm" class="form-label">Confirm password</label>
               <input
                 type="password"
                 class="form-control"
@@ -139,7 +139,7 @@
             </div>
 
             <div class="mb-3">
-              <p class="fs-6">Обери стать</p>
+              <p class="fs-6">What's your gender?</p>
               <div class="form-check">
                 <input
                   class="form-check-input"
@@ -150,7 +150,7 @@
                   v-model="formData.gender"
                   @input="validateField('gender')"
                 />
-                <label class="form-check-label" for="male"> Чоловіча </label>
+                <label class="form-check-label" for="male"> Male </label>
               </div>
               <div class="form-check">
                 <input
@@ -162,16 +162,15 @@
                   v-model="formData.gender"
                   @input="validateField('gender')"
                 />
-                <label class="form-check-label" for="female"> Жіноча </label>
+                <label class="form-check-label" for="female"> Female </label>
               </div>
               <span class="form-text">{{ errors.gender }}</span>
             </div>
             <div class="mb-3">
               <select class="form-select" v-model="formData.role">
-                <option value="0">Обери роль</option>
-                <option value="1">Власник</option>
-                <option value="2">Адмін</option>
-                <option value="3">Користувач</option>
+                <option value="0">Role</option>
+                <option value="1">User</option>
+                <option value="2">Admin</option>
               </select>
               <span class="form-text">{{ errors.role }}</span>
             </div>
@@ -181,7 +180,7 @@
                 class="btn btn-outline-success"
                 :disabled="!isFormValid"
               >
-                Зареєструватись
+                Sign in
               </button>
             </div>
           </form>
