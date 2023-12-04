@@ -1,55 +1,43 @@
 <template>
   <div>
-    <nav class="navbar custom-navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container-fluid">
-        <router-link to="/" class="navbar-brand custom-link" href="#"
-          >bukVar</router-link
-        >
+        <router-link to="/" class="navbar-brand">bukVar</router-link>
         <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
+          data-bs-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span><i class="fa-solid fa-bars"></i></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <router-link to="/books" class="nav-link custom-link" href="#"
+              <router-link
+                to="//books"
+                class="nav-link active"
+                aria-current="page"
                 >Books</router-link
               >
             </li>
             <li class="nav-item">
-              <router-link to="/authors" class="nav-link custom-link" href="#"
-                >Authors</router-link
-              >
+              <router-link to="/faq" class="nav-link">FAQ</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/faq" class="nav-link custom-link" href="#"
-                >FAQ</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link to="/contacts" class="nav-link custom-link" href="#"
+              <router-link to="/contacts" class="nav-link"
                 >Contacts</router-link
               >
             </li>
           </ul>
-        </div>
-        <div class="d-flex">
-          <router-link to="/login" class="nav-link custom-link-auth" href="#"
-            >Log in</router-link
-          >
-          <router-link
-            to="/registration"
-            class="nav-link custom-link-auth"
-            href="#"
-            >Sign in</router-link
-          >
+          <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
+            <li class="nav-item">
+              <router-link to="/login" class="nav-link">Sign in</router-link>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
@@ -57,19 +45,7 @@
 </template>
 <style>
 .custom-navbar {
-  background-color: #e4fff8;
-}
-.custom-link {
-  color: #007a93;
-  font-weight: 500;
-  font-size: 24px;
-}
-.custom-link-auth {
-  font-size: 20px;
-  color: #007a93;
-}
-.custom-link:hover {
-  color: #009ebe;
+  background-color: rgb(193, 136, 80);
 }
 </style>
 <script>

@@ -1,8 +1,10 @@
 <template>
   <div>
-    <footer class="footer custom-footer fixed-bottom text-center py-3">
+    <footer class="footer custom-footer text-center py-3">
       <div class="container">
-        <a href="viber://chat?number=+380509431722" class="contact-icon"><i class="fa-brands fa-viber"></i></a>
+        <a href="viber://chat?number=+380509431722" class="contact-icon"
+          ><i class="fa-brands fa-viber"></i
+        ></a>
         <a href="mailto:dunchasid@gmail.com" class="contact-icon"
           ><i class="fa-regular fa-envelope"></i
         ></a>
@@ -15,15 +17,15 @@
 </template>
 <style>
 .custom-footer {
-  background-color: #e4fff8;
+  background-color: rgb(193, 136, 80);
 }
 .contact-icon {
-  color: #007a93;
+  color: rgb(50, 31, 12);
   font-size: 30px;
   padding: 5px;
 }
 .contact-icon:hover {
-  color: #006074;
+  color: rgb(78, 47, 17);
 }
 </style>
 <script>

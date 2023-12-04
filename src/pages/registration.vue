@@ -1,6 +1,6 @@
 <template>
   <div>
-    <RegForm />
+      <RegForm />
   </div>
 </template>
 
@@ -13,3 +13,4 @@ export default defineComponent({
   components: { RegForm },
 });
 </script>
+
