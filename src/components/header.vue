@@ -18,7 +18,7 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <router-link
-                to="//books"
+                to="/books"
                 class="nav-link active"
                 aria-current="page"
                 >Books</router-link

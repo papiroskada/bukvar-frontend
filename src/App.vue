@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <Header v-if="!isAuthPage" />
     <router-view></router-view>
     <Footer v-if="!isAuthPage" />
