@@ -5,22 +5,8 @@
         <div
           class="col-sm-5 mx-auto form shadow-sm p-3 mb-5 bg-body-tertiary rounded"
         >
+          <h2 class="text-center m-3">Registration</h2>
           <form @submit.prevent="submitForm">
-            <img
-              :src="avatarSrc"
-              class="avatar mx-auto d-block mb-3 rounded-circle"
-              alt="аватар"
-            />
-            <div class="input-group mb-3">
-              <input
-                type="file"
-                class="form-control"
-                id="avatar"
-                accept="image/*"
-                @change="handleAvatarChange"
-              />
-              <label class="input-group-text" for="avatar">Download</label>
-            </div>
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
               <input
@@ -125,7 +111,9 @@
               <span class="form-text">{{ errors.password }}</span>
             </div>
             <div class="mb-3">
-              <label for="passwordConfirm" class="form-label">Confirm password</label>
+              <label for="passwordConfirm" class="form-label"
+                >Confirm password</label
+              >
               <input
                 type="password"
                 class="form-control"
@@ -177,7 +165,7 @@
             <div class="d-grid gap-2 col-6 mx-auto">
               <button
                 type="submit"
-                class="btn btn-outline-success"
+                class="btn custom-btn"
                 :disabled="!isFormValid"
               >
                 Sign in
@@ -367,8 +355,17 @@ export default {
 
 <style scoped>
 .content {
-  background-color: #c1fff0;
+  background-color: rgb(217, 187, 157);
   margin-top: 0;
+}
+.custom-btn:disabled {
+  border: 1px solid rgb(193, 136, 80);
+  background-color: rgb(255, 255, 255);
+  color: rgb(112, 81, 50);
+}
+.custom-btn {
+  background-color: rgb(193, 136, 80);
+  color: #ffffff;
 }
 .form {
   background-color: #ffffff;

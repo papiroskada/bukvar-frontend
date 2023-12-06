@@ -26,15 +26,13 @@
                 id="password"
                 aria-describedby="passwordHelp"
                 v-model="formData.password"
-                @input="validateField('password')"
                 placeholder="**********"
               />
-              <span class="form-text">{{ errors.password }}</span>
             </div>
             <div class="d-grid gap-2 col-6 mx-auto">
               <button
                 type="submit"
-                class="btn btn-outline-success"
+                class="btn custom-btn"
                 :disabled="!isFormValid"
               >
                 Log in
@@ -49,15 +47,18 @@
 
 <script>
 import { mask } from "vue-the-mask";
+
 export default {
   directives: { mask },
   data() {
     return {
       formData: {
-        username: "",
+        email: "",
         password: "",
       },
-      errors: {},
+      errors: {
+        email: "",
+      },
       isFormValid: false,
     };
   },
@@ -74,16 +75,16 @@ export default {
       this.errors[fieldName] = "";
 
       const validationRules = {
-        username: this.validateUsername,
         email: this.validateEmail,
-        password: this.validatePassword,
       };
 
       if (validationRules[fieldName]) {
         validationRules[fieldName](fieldName);
       }
+
       this.isFormValid = this.validateForm();
     },
+
     validateEmail(fieldName) {
       const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/;
       if (!emailRegex.test(this.formData[fieldName])) {
@@ -92,36 +93,36 @@ export default {
         this.errors[fieldName] = "";
       }
     },
-    validatePassword(fieldName) {
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-      if (!passwordRegex.test(this.formData[fieldName])) {
-        this.errors[fieldName] =
-          "The password must consist of 8 characters, including special characters, numbers, and both uppercase and lowercase letters.";
-      } else {
-        this.errors[fieldName] = "";
-      }
-    },
-    validateForm() {
-      const hasErrors = Object.values(this.errors).some(
-        (error) => error !== ""
-      );
-      this.isFormValid = !hasErrors;
 
-      return !hasErrors;
+    validateForm() {
+      const emailIsValid = this.validateEmail("email");
+
+      const emailIsRequired = this.formData.email.trim() !== "";
+      const passwordIsRequired = this.formData.password.trim() !== "";
+
+      const isEmailValid = emailIsRequired && emailIsValid;
+      const isPasswordValid = passwordIsRequired;
+
+      return isEmailValid && isPasswordValid;
     },
+
     submitForm() {
       if (this.validateForm()) {
         this.$emit("submitForm", { ...this.formData, id: Date.now() });
         this.resetForm();
       }
     },
+
     resetForm() {
       this.isFormValid = false;
       this.formData = {
         email: "",
         password: "",
       };
-      this.errors = {};
+      this.errors = {
+        email: "",
+        password: "",
+      };
     },
   },
 };
@@ -129,7 +130,7 @@ export default {
 
 <style scoped>
 .content {
-  background-color: #c1fff0;
+  background-color: rgb(217, 187, 157);
   margin-top: 0;
   display: flex;
   flex-direction: column;
@@ -145,11 +146,14 @@ export default {
   padding: 30px;
   margin: 20px;
 }
-.avatar {
-  max-width: 40%;
-  aspect-ratio: 1/1;
-  max-width: 200px;
-  object-fit: cover;
+.custom-btn:disabled {
+  border: 1px solid rgb(193, 136, 80);
+  background-color: rgb(255, 255, 255);
+  color: rgb(112, 81, 50);
+}
+.custom-btn {
+  background-color: rgb(193, 136, 80);
+  color: #ffffff;
 }
 .form-text {
   color: rgb(197, 0, 0);
