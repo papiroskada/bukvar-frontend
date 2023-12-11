@@ -25,7 +25,7 @@
               <router-link to="/faq" class="nav-link">FAQ</router-link>
             </li>
             <li class="nav-item" v-on:click="toggleContactsMenu">
-              <router-link to="/" class="nav-link"
+              <router-link to="" class="nav-link"
                 >Contacts <i class="fa-solid fa-caret-down"></i
               ></router-link>
               <ul v-show="showMenu" class="submenu">

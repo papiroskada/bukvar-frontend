@@ -46,56 +46,30 @@
               <span class="form-text">{{ errors.name }}</span>
             </div>
             <div class="mb-3">
-              <label for="surname" class="form-label">Second name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="surname"
-                aria-describedby="surnameHelp"
-                v-model="formData.surname"
-                @input="validateField('surname')"
-                placeholder="Чайка"
-              />
-              <span class="form-text">{{ errors.surname }}</span>
-            </div>
-            <div class="mb-3">
-              <label for="middleName" class="form-label">Middle name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="middleName"
-                aria-describedby="middleNameHelp"
-                v-model="formData.middleName"
-                @input="validateField('middleName')"
-                placeholder="Павлович"
-              />
-              <span class="form-text">{{ errors.middleName }}</span>
-            </div>
-            <div class="mb-3">
-              <label for="cellphone" class="form-label">Phone number</label>
+              <label for="phone" class="form-label">Phone number</label>
               <input
                 type="tel"
                 class="form-control"
-                id="cellphone"
-                name="cellphone"
+                id="phone"
+                name="phone"
                 placeholder="+38(000)-000-00-00"
                 v-mask="'+38(0##)-###-##-##'"
-                v-model="formData.cellphone"
-                @input="validateField('cellphone')"
+                v-model="formData.phone"
+                @input="validateField('phone')"
               />
-              <span class="form-text">{{ errors.cellphone }}</span>
+              <span class="form-text">{{ errors.phone }}</span>
             </div>
             <div class="mb-3">
-              <label for="birthDate" class="form-label">Birth date</label>
+              <label for="birthdate" class="form-label">Birth date</label>
               <input
                 type="date"
                 class="form-control"
-                id="birthDate"
-                aria-describedby="birthDateHelp"
-                v-model="formData.birthDate"
-                @input="validateField('birthDate')"
+                id="birthdate"
+                aria-describedby="birthdateHelp"
+                v-model="formData.birthdate"
+                @input="validateField('birthdate')"
               />
-              <span class="form-text">{{ errors.birthDate }}</span>
+              <span class="form-text">{{ errors.birthdate }}</span>
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
@@ -110,7 +84,7 @@
               />
               <span class="form-text">{{ errors.password }}</span>
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label for="passwordConfirm" class="form-label"
                 >Confirm password</label
               >
@@ -124,44 +98,7 @@
                 placeholder="**********"
               />
               <span class="form-text">{{ errors.passwordConfirm }}</span>
-            </div>
-
-            <div class="mb-3">
-              <p class="fs-6">What's your gender?</p>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  id="male"
-                  v-model="formData.gender"
-                  @input="validateField('gender')"
-                />
-                <label class="form-check-label" for="male"> Male </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  id="female"
-                  v-model="formData.gender"
-                  @input="validateField('gender')"
-                />
-                <label class="form-check-label" for="female"> Female </label>
-              </div>
-              <span class="form-text">{{ errors.gender }}</span>
-            </div>
-            <div class="mb-3">
-              <select class="form-select" v-model="formData.role">
-                <option value="0">Role</option>
-                <option value="1">User</option>
-                <option value="2">Admin</option>
-              </select>
-              <span class="form-text">{{ errors.role }}</span>
-            </div>
+            </div> -->
             <div class="d-grid gap-2 col-6 mx-auto">
               <button
                 type="submit"
@@ -180,6 +117,8 @@
 
 <script>
 import { mask } from "vue-the-mask";
+import axios from "axios";
+
 export default {
   directives: { mask },
   data() {
@@ -188,14 +127,10 @@ export default {
         email: "",
         username: "",
         name: "",
-        surname: "",
-        middleName: "",
-        cellphone: "",
-        birthDate: null,
+        phone: "",
+        birthdate: null,
         password: "",
-        passwordConfirm: "",
-        gender: null,
-        role: 0,
+        // passwordConfirm: "",
       },
       errors: {},
       isFormValid: false,
@@ -227,15 +162,11 @@ export default {
       const validationRules = {
         username: this.validateUsername,
         name: this.validateName,
-        surname: this.validateName,
-        middleName: this.validateName,
-        birthDate: this.validateBirthDate,
+        birthdate: this.validateBirthDate,
         email: this.validateEmail,
-        cellphone: this.validateCellphone,
-        gender: this.validateGender,
-        role: this.validateRole,
+        phone: this.validateCellphone,
         password: this.validatePassword,
-        passwordConfirm: this.validatePasswordConfirm,
+        // passwordConfirm: this.validatePasswordConfirm,
       };
 
       if (validationRules[fieldName]) {
@@ -245,7 +176,7 @@ export default {
     },
     validateName(fieldName) {
       const ukrainianLettersRegex =
-        /^([А-ЯІЇЄҐ'’][а-яіїєґ'’]{1,})([А-ЯІЇЄҐ'’][а-яіїєґ'’]*|-?[А-ЯІЇЄҐ'’][а-яіїєґ'’]*)?$/;
+        /^[A-Z][a-z]{1,}$/;
       if (!ukrainianLettersRegex.test(this.formData[fieldName])) {
         this.errors[
           fieldName
@@ -266,9 +197,9 @@ export default {
     },
     validateBirthDate(fieldName) {
       const currentDate = new Date();
-      const birthDate = new Date(this.formData[fieldName]);
+      const birthdate = new Date(this.formData[fieldName]);
       const age = Math.floor(
-        (currentDate - birthDate) / (365.25 * 24 * 60 * 60 * 1000)
+        (currentDate - birthdate) / (365.25 * 24 * 60 * 60 * 1000)
       );
       if (age < 18) {
         this.errors[fieldName] = "Вам має бути більше 18 років";
@@ -302,21 +233,14 @@ export default {
       } else {
         this.errors[fieldName] = "";
       }
-    },
-    validateRole(fieldName) {
-      if (this.formData[fieldName] === 0) {
-        this.errors[fieldName] = "Оберіть роль";
-      } else {
-        this.errors[fieldName] = "";
-      }
-    },
-    validatePasswordConfirm(fieldName) {
-      if (this.formData.password !== this.formData.passwordConfirm) {
-        this.errors[fieldName] = "Паролі не співпадають";
-      } else {
-        this.errors[fieldName] = "";
-      }
-    },
+  },
+    // validatePasswordConfirm(fieldName) {
+    //   if (this.formData.password !== this.formData.passwordConfirm) {
+    //     this.errors[fieldName] = "Паролі не співпадають";
+    //   } else {
+    //     this.errors[fieldName] = "";
+    //   }
+    // },
     validateForm() {
       const isEmptyField = Object.keys(this.formData).some(
         (fieldName) => !this.formData[fieldName]
@@ -327,8 +251,15 @@ export default {
     },
     submitForm() {
       if (this.validateForm()) {
-        this.$emit("submitForm", { ...this.formData, id: Date.now() });
-        this.resetForm();
+        axios
+          .post("http://localhost:8080/auth/sign-up", this.formData)
+          .then((response) => {
+            console.log("Server response:", response.data);
+            this.resetForm();
+          })
+          .catch((error) => {
+            console.error("Error submitting form:", error);
+          });
       }
     },
     resetForm() {
@@ -337,14 +268,9 @@ export default {
         email: "",
         username: "",
         name: "",
-        surname: "",
-        middleName: "",
-        cellphone: "",
-        birthDate: null,
+        phone: "",
+        birthdate: null,
         password: "",
-        passwordConfirm: "",
-        gender: null,
-        role: 0,
       };
       this.errors = {};
       this.avatarSrc = require("@/assets/avatar.svg");

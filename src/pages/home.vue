@@ -14,21 +14,32 @@
         innovation and streamlined operations.
       </p>
     </div>
-    <div class="top-books mt-3">
-      <TopBooks />
+    <div class="login">
+      <div class="row">
+        <div class="sign-in col-7"><LogIn /></div>
+        <div class="sign-up col-3">
+          <span class="new">New to bukVar?</span> <br />
+          <router-link to="/registration">Create an account</router-link>
+        </div>
+      </div>
     </div>
+    <!-- <div class="top-books mt-3">
+      <TopBooks />
+    </div> -->
   </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import TopBooks from "@/components/top-books.vue";
+// import TopBooks from "@/components/top-books.vue";
 import Carousel from "@/components/carousel.vue";
+import LogIn from "@/components/log-form.vue";
 
 export default defineComponent({
   name: "HomeView",
-  components: { TopBooks, Carousel },
+  components: { LogIn, Carousel },
 });
+// TopBooks,
 </script>
 <style scoped>
 .container {
@@ -39,6 +50,11 @@ export default defineComponent({
 }
 .about {
   padding: 20px 0;
+}
+.login {
+  margin: 10px 0;
+}
+.sign-in {
 }
 .about-story {
   margin: auto;

@@ -2,9 +2,7 @@
   <div class="content">
     <div class="container">
       <div class="row">
-        <div
-          class="col-sm-5 mx-auto form shadow-sm p-3 mb-5 bg-body-tertiary rounded"
-        >
+        <div class="col-sm-6 form shadow-sm p-3 bg-body-tertiary rounded">
           <form @submit.prevent="submitForm">
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
@@ -30,13 +28,7 @@
               />
             </div>
             <div class="d-grid gap-2 col-6 mx-auto">
-              <button
-                type="submit"
-                class="btn custom-btn"
-                :disabled="!isFormValid"
-              >
-                Log in
-              </button>
+              <button type="submit" :disabled="!isFormValid" class="btn custom-btn">Log in</button>
             </div>
           </form>
         </div>
@@ -46,10 +38,7 @@
 </template>
 
 <script>
-import { mask } from "vue-the-mask";
-
 export default {
-  directives: { mask },
   data() {
     return {
       formData: {
@@ -89,21 +78,24 @@ export default {
       const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/;
       if (!emailRegex.test(this.formData[fieldName])) {
         this.errors[fieldName] = "Enter a valid email address";
+        return false; // Return false if email is invalid
       } else {
         this.errors[fieldName] = "";
+        return true; // Return true if email is valid
       }
     },
 
     validateForm() {
       const emailIsValid = this.validateEmail("email");
-
       const emailIsRequired = this.formData.email.trim() !== "";
       const passwordIsRequired = this.formData.password.trim() !== "";
 
       const isEmailValid = emailIsRequired && emailIsValid;
       const isPasswordValid = passwordIsRequired;
 
-      return isEmailValid && isPasswordValid;
+      this.isFormValid = isEmailValid && isPasswordValid;
+
+      return this.isFormValid;
     },
 
     submitForm() {
@@ -129,22 +121,10 @@ export default {
 </script>
 
 <style scoped>
-.content {
-  background-color: rgb(217, 187, 157);
-  margin-top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-.row {
-  margin: 0 5px;
-}
 .form {
   background-color: #ffffff;
-  padding: 30px;
-  margin: 20px;
+  margin-left: auto;
+  margin-right: 0;
 }
 .custom-btn:disabled {
   border: 1px solid rgb(193, 136, 80);
