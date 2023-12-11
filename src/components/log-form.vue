@@ -78,10 +78,10 @@ export default {
       const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/;
       if (!emailRegex.test(this.formData[fieldName])) {
         this.errors[fieldName] = "Enter a valid email address";
-        return false; // Return false if email is invalid
+        return false; 
       } else {
         this.errors[fieldName] = "";
-        return true; // Return true if email is valid
+        return true; 
       }
     },
 

@@ -33,7 +33,9 @@
               <span class="form-text">{{ errors.username }}</span>
             </div>
             <div class="mb-3">
-              <label for="name" class="form-label">First name</label>
+              <label for="name" class="form-label"
+                >First name and second name</label
+              >
               <input
                 type="text"
                 class="form-control"
@@ -41,7 +43,7 @@
                 aria-describedby="nameHelp"
                 v-model="formData.name"
                 @input="validateField('name')"
-                placeholder="Антон"
+                placeholder="Anton Chaika"
               />
               <span class="form-text">{{ errors.name }}</span>
             </div>
@@ -84,7 +86,7 @@
               />
               <span class="form-text">{{ errors.password }}</span>
             </div>
-            <!-- <div class="mb-3">
+            <div class="mb-3">
               <label for="passwordConfirm" class="form-label"
                 >Confirm password</label
               >
@@ -98,7 +100,7 @@
                 placeholder="**********"
               />
               <span class="form-text">{{ errors.passwordConfirm }}</span>
-            </div> -->
+            </div>
             <div class="d-grid gap-2 col-6 mx-auto">
               <button
                 type="submit"
@@ -130,7 +132,7 @@ export default {
         phone: "",
         birthdate: null,
         password: "",
-        // passwordConfirm: "",
+        passwordConfirm: "",
       },
       errors: {},
       isFormValid: false,
@@ -166,7 +168,7 @@ export default {
         email: this.validateEmail,
         phone: this.validateCellphone,
         password: this.validatePassword,
-        // passwordConfirm: this.validatePasswordConfirm,
+        passwordConfirm: this.validatePasswordConfirm,
       };
 
       if (validationRules[fieldName]) {
@@ -175,8 +177,7 @@ export default {
       this.isFormValid = this.validateForm();
     },
     validateName(fieldName) {
-      const ukrainianLettersRegex =
-        /^[A-Z][a-z]{1,}$/;
+      const ukrainianLettersRegex = /^[A-Z][a-zA-Z]{1,} [A-Z][a-zA-Z]{1,}$/;
       if (!ukrainianLettersRegex.test(this.formData[fieldName])) {
         this.errors[
           fieldName
@@ -233,14 +234,14 @@ export default {
       } else {
         this.errors[fieldName] = "";
       }
-  },
-    // validatePasswordConfirm(fieldName) {
-    //   if (this.formData.password !== this.formData.passwordConfirm) {
-    //     this.errors[fieldName] = "Паролі не співпадають";
-    //   } else {
-    //     this.errors[fieldName] = "";
-    //   }
-    // },
+    },
+    validatePasswordConfirm(fieldName) {
+      if (this.formData.password !== this.formData.passwordConfirm) {
+        this.errors[fieldName] = "Паролі не співпадають";
+      } else {
+        this.errors[fieldName] = "";
+      }
+    },
     validateForm() {
       const isEmptyField = Object.keys(this.formData).some(
         (fieldName) => !this.formData[fieldName]
@@ -251,8 +252,17 @@ export default {
     },
     submitForm() {
       if (this.validateForm()) {
+        const requestData = {
+          email: this.formData.email,
+          username: this.formData.username,
+          name: this.formData.name,
+          phone: this.formData.phone,
+          birthdate: this.formData.birthdate,
+          password: this.formData.password,
+        };
+
         axios
-          .post("http://localhost:8080/auth/sign-up", this.formData)
+          .post("http://localhost:8080/auth/sign-up", requestData)
           .then((response) => {
             console.log("Server response:", response.data);
             this.resetForm();
@@ -262,6 +272,7 @@ export default {
           });
       }
     },
+
     resetForm() {
       this.isFormValid = false;
       this.formData = {
@@ -271,6 +282,7 @@ export default {
         phone: "",
         birthdate: null,
         password: "",
+        passwordConfirm: "",
       };
       this.errors = {};
       this.avatarSrc = require("@/assets/avatar.svg");
