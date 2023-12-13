@@ -45,8 +45,11 @@
             </li>
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
-            <li class="nav-item">
+            <li v-if="checkUserToken == null" class="nav-item">
               <router-link to="/login" class="nav-link">Sign in</router-link>
+            </li>
+            <li v-else class="nav-item">
+              <router-link @click="logout" to="/" class="nav-link">Logout</router-link>
             </li>
           </ul>
         </div>
@@ -54,6 +57,37 @@
     </nav>
   </div>
 </template>
+
+<script>
+    import { defineComponent } from 'vue';
+    import { DefaultAPIInstance } from "@/api";
+    
+    export default defineComponent({
+    name: "HeaderItem",
+    data() {
+        return {
+            showMenu: false,
+        };
+    },
+    computed: {
+        checkUserToken() {
+            console.log(localStorage.getItem('token'));
+            return localStorage.getItem('token');
+        },
+    },
+    methods: {
+        toggleContactsMenu() {
+            this.showMenu = !this.showMenu;
+        },
+        logout() {
+            localStorage.removeItem('token');
+            delete DefaultAPIInstance.defaults.headers['authorization'];
+            //localStorage.removeItem('userRole');
+            this.$router.push({ name: 'Home' });
+        }
+    },
+});
+</script>
 
 <style>
 .custom-navbar {
@@ -91,18 +125,4 @@
 }
 </style>
 
-<script>
-export default {
-  name: "HeaderItem",
-  data() {
-    return {
-      showMenu: false,
-    };
-  },
-  methods: {
-    toggleContactsMenu() {
-      this.showMenu = !this.showMenu;
-    },
-  },
-};
-</script>
+

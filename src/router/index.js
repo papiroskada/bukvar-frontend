@@ -7,19 +7,27 @@ import FAQ from "@/pages/faq.vue";
 import Author from "@/pages/author.vue";
 import Profile from "@/pages/profile.vue";
 
+/* eslint-disable */
+const authGuard = (to, from, next) => {
+    const isAuthorized = localStorage.hasOwnProperty('token');
+    if (!isAuthorized) {
+        next({ name: 'Login' });
+    } else {
+        next();
+    }
+};
+
 const routes = [
   { path: "/", name: "Home", component: Home },
   { path: "/login", name: "Login", component: Login },
-  { path: "/books", name: "BooksCatalog", component: BooksCatalog },
+  { path: "/books", name: "BooksCatalog", component: BooksCatalog, beforeEnter: authGuard },
   { path: "/faq", name: "FAQ", component: FAQ },
-  { path: "/author", name: "Author", component: Author },
-  { path: "/profile", name: "Profile", component: Profile },
+  { path: "/authors/:id", name: "Author", component: Author, beforeEnter: authGuard },
+  { path: "/profile", name: "Profile", component: Profile, beforeEnter: authGuard },
   { path: "/registration", name: "Registration", component: Registration },
 ];
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
+export const router = createRouter({
+    history: createWebHistory(),
+    routes
 });
-
-export default router;

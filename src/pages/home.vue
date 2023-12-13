@@ -30,17 +30,18 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-// import TopBooks from "@/components/top-books.vue";
-import Carousel from "@/components/carousel.vue";
-import LogIn from "@/components/log-form.vue";
+  import { defineComponent } from "vue";
+  // import TopBooks from "@/components/top-books.vue";
+  import Carousel from "@/components/carousel.vue";
+  import LogIn from "@/components/log-form.vue";
 
-export default defineComponent({
-  name: "HomeView",
-  components: { LogIn, Carousel },
-});
-// TopBooks,
+  export default defineComponent({
+    name: "HomeView",
+    components: { LogIn, Carousel },
+  });
+  // TopBooks,
 </script>
+
 <style scoped>
 .container {
   margin: 20px auto;

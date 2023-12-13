@@ -119,7 +119,8 @@
 
 <script>
 import { mask } from "vue-the-mask";
-import axios from "axios";
+//import axios from "axios";
+import { AuthAPI } from "@/api/AuthAPI/authAPI";
 
 export default {
   directives: { mask },
@@ -148,16 +149,16 @@ export default {
     },
   },
   methods: {
-    handleAvatarChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.avatarSrc = reader.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    },
+    // handleAvatarChange(event) {
+    //   const file = event.target.files[0];
+    //   if (file) {
+    //     const reader = new FileReader();
+    //     reader.onload = () => {
+    //       this.avatarSrc = reader.result;
+    //     };
+    //     reader.readAsDataURL(file);
+    //   }
+    // },
     validateField(fieldName) {
       this.errors[fieldName] = "";
 
@@ -181,7 +182,7 @@ export default {
       if (!ukrainianLettersRegex.test(this.formData[fieldName])) {
         this.errors[
           fieldName
-        ] = `Поле повинно бути написане українською та починатися з великої літери.`;
+        ] = `Поле повинно бути написане англійською та починатися з великої літери.`;
       } else {
         this.errors[fieldName] = "";
       }
@@ -250,27 +251,28 @@ export default {
 
       return !isEmptyField;
     },
-    submitForm() {
-      if (this.validateForm()) {
-        const requestData = {
-          email: this.formData.email,
-          username: this.formData.username,
-          name: this.formData.name,
-          phone: this.formData.phone,
-          birthdate: this.formData.birthdate,
-          password: this.formData.password,
-        };
+    async submitForm() {
+        try {
+            if (this.validateForm()) {
+                const requestData = {
+                    username: this.formData.username,
+                    name: this.formData.name,
+                    email: this.formData.email,
+                    password: this.formData.password,
+                    phone: this.formData.phone,
+                    birthdate: this.formData.birthdate,
+                };
 
-        axios
-          .post("http://localhost:8080/auth/sign-up", requestData)
-          .then((response) => {
-            console.log("Server response:", response.data);
-            this.resetForm();
-          })
-          .catch((error) => {
-            console.error("Error submitting form:", error);
-          });
-      }
+                const res = await AuthAPI.register(requestData);
+
+                if (res && res.data) {
+                    this.resetForm();
+                    this.$router.push({name: 'Login'});
+                }
+            }
+        } catch (err) {
+            console.log(err);
+        }
     },
 
     resetForm() {
@@ -285,7 +287,7 @@ export default {
         passwordConfirm: "",
       };
       this.errors = {};
-      this.avatarSrc = require("@/assets/avatar.svg");
+      //this.avatarSrc = require("@/assets/avatar.svg");
     },
   },
 };

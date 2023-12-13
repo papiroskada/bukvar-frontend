@@ -1,8 +1,8 @@
 <template>
   <div class="content">
-    <Header v-if="!isAuthPage" />
+    <Header v-if="!isAuthPage"/>
     <router-view></router-view>
-    <Footer v-if="!isAuthPage" />
+    <Footer v-if="!isAuthPage"/>
   </div>
 </template>
 
@@ -10,14 +10,13 @@
 import { defineComponent } from "vue";
 import Header from "@/components/header.vue";
 import Footer from "@/components/footer.vue";
-
 export default defineComponent({
-  components: { Footer, Header },
   data() {
     return {
       isAuthPage: false,
     };
   },
+  components: {Header, Footer},
   watch: {
     $route(to) {
       this.isAuthPage = to.name === "Registration" || to.name === "Login";

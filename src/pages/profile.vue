@@ -14,11 +14,13 @@
     </div>
   </div>
 </template>
+
 <script>
-export default {
-  name: "UserProfile",
-};
+  export default {
+    name: "UserProfile",
+  };
 </script>
+
 <style scoped>
 .container {
   margin: 20px auto;
