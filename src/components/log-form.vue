@@ -32,6 +32,7 @@
          <div class="d-grid gap-2 col-6 mx-auto">
            <button type="submit" :disabled="!isFormValid" class="btn custom-btn">Log in</button>
          </div>
+         <span class="form-text">{{ errors.submit }}</span>
         </form>
       </div>
      </div>
@@ -53,7 +54,8 @@ export default {
         },
         errors: {
             username: "",
-            password: ""
+            password: "",
+            submit: ""
         },
         isFormValid: false,
    };
@@ -81,7 +83,6 @@ export default {
 
         this.isFormValid = this.validateForm();
     },
-
    validateUsername(fieldName) {
       const usernameRegex = /^[a-zA-Z0-9]+$/;
       if (!usernameRegex.test(this.formData[fieldName])) {
@@ -101,8 +102,7 @@ export default {
         this.errors[fieldName] = "";
       }
     },
-
-   validateForm() {
+    validateForm() {
         const nameIsRequired = this.formData.username.trim() !== "";
         const passwordIsRequired = this.formData.password.trim() !== "";
 
@@ -112,19 +112,26 @@ export default {
         this.isFormValid = isNameValid && isPasswordValid;
         return this.isFormValid;
    },
-
    async submitForm() {
         try {
             if (this.validateForm()) {
-                const res = await AuthAPI.login(this.formData.username, this.formData.password);
+              console.log(localStorage.getItem('token'));
+                if (localStorage.getItem('token') == null) {
+                  const res = await AuthAPI.login(this.formData.username, this.formData.password);
 
-                if (res && res.data) {
-                    localStorage.setItem('token', res.data.token);
-                    DefaultAPIInstance.defaults.headers['authorization'] = `Bearer ${res.data.token}`;
-                    //const user = await UsersAPI.user()
-                    //have to put userRole to localStorage
-                    this.$router.push({name: 'Profile'});
-                    this.resetForm();
+                  if (res && res.data) {
+                      localStorage.setItem('token', res.data.token);
+                      DefaultAPIInstance.defaults.headers['authorization'] = `Bearer ${res.data.token}`;
+                      //const user = await UsersAPI.user()
+                      //have to put userRole to localStorage
+                      this.$router.push({name: 'Home'});
+                      if (window.location.pathname !== '/login') {
+                        this.$router.go();
+                      }
+                      this.resetForm();
+                  }
+                } else {
+                  this.errors.submit = "You are already logged in";
                 }
             }
         } catch (err) {

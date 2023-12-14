@@ -67,12 +67,12 @@
     data() {
         return {
             showMenu: false,
+            token: null
         };
     },
     computed: {
         checkUserToken() {
-            console.log(localStorage.getItem('token'));
-            return localStorage.getItem('token');
+            return this.token;
         },
     },
     methods: {
@@ -81,11 +81,17 @@
         },
         logout() {
             localStorage.removeItem('token');
-            delete DefaultAPIInstance.defaults.headers['authorization'];
             //localStorage.removeItem('userRole');
+            delete DefaultAPIInstance.defaults.headers['authorization'];
+
+            this.token = null;
+            
             this.$router.push({ name: 'Home' });
         }
     },
+    mounted() {
+      this.token = localStorage.getItem('token');
+    }
 });
 </script>
 
