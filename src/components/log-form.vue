@@ -44,6 +44,7 @@
 import { AuthAPI } from "@/api/AuthAPI/authAPI";
 //import { UsersAPI } from "@/api/UsersAPI/usersAPI";
 import { DefaultAPIInstance } from "@/api";
+import { getUserInfo } from '../common/decodeJWT';
 
 export default {
   data() {
@@ -115,15 +116,18 @@ export default {
    async submitForm() {
         try {
             if (this.validateForm()) {
-              console.log(localStorage.getItem('token'));
                 if (localStorage.getItem('token') == null) {
                   const res = await AuthAPI.login(this.formData.username, this.formData.password);
 
                   if (res && res.data) {
-                      localStorage.setItem('token', res.data.token);
-                      DefaultAPIInstance.defaults.headers['authorization'] = `Bearer ${res.data.token}`;
-                      //const user = await UsersAPI.user()
-                      //have to put userRole to localStorage
+                      const token = res.data.token;
+                      
+                      localStorage.setItem('token', token);
+                      DefaultAPIInstance.defaults.headers['authorization'] = `Bearer ${token}`;
+
+                      const {userRole} = getUserInfo(token);
+                      localStorage.setItem('userRole', userRole);
+
                       this.$router.push({name: 'Home'});
                       if (window.location.pathname !== '/login') {
                         this.$router.go();
