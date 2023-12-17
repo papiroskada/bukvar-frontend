@@ -1,9 +1,13 @@
-import { LoginAPIInstance, DefaultAPIInstance } from "..";
+import { DefaultAPIInstance } from "..";
 
 export const BooksAPI = {
     books() {
         const url = `/books`;
-        return LoginAPIInstance.get(url);
+        return DefaultAPIInstance.get(url);
+    },
+    booksWithPagination({currentPage, pageSize}) {
+        const url = `/books?page=${currentPage}&pageSize=${pageSize}`;
+        return DefaultAPIInstance.get(url);
     },
     createBook(payload) {
         const url = '/books';

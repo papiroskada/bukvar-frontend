@@ -1,24 +1,47 @@
 <template>
   <div class="content">
     <div class="container">
-      <h2 class="m-lg-3 text-center">Hello, name surname!</h2>
+      <h2 class="m-lg-3 text-center">Hello, {{ user.name }}</h2>
       <hr />
       <ul class="info">
-        <li>Name:</li>
-        <li>Surname:</li>
-        <li>Email:</li>
-        <li>Password:</li>
-        <li>Cellphone:</li>
-        <li>Birth date:</li>
+        <li>Name: {{ user.name }}</li>
+        <li>Username: {{ user.username }}</li>
+        <li>Email: {{ user.email }}</li>
+        <li>Cellphone: {{ user.phone }}</li>
+        <li>Birth date: {{ formatDate(user.birthdate) }}</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    name: "UserProfile",
-  };
+    import { defineComponent } from 'vue';
+    import { getUserInfo } from '@/common/decodeJWT';
+    import { UsersAPI } from '@/api/UsersAPI/usersAPI';
+    import { formatDate } from '../common/formatDate';
+
+    export default defineComponent({
+        name: "UserProfile",
+        data() {
+            return {
+                user: {}
+            }
+        },
+        methods: {
+            formatDate(date) {
+                return formatDate(date); 
+            }
+        },
+        async mounted() {
+            const {userId} = getUserInfo(localStorage.getItem('token'));
+            if (userId) {
+                const res = await UsersAPI.user(userId);
+                if (res && res.data) {
+                    this.user = {...res.data};
+                }
+            }
+        }
+    });
 </script>
 
 <style scoped>

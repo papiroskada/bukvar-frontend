@@ -149,7 +149,7 @@
             },
             async onSubmit() {
                 if (!this.hasErrors) {
-                    if (!this.name || !this.price || !this.description || !this.pages || !this.genre || !this.capacity || !this.capacitySold || !this.selectedAuthors.length) {
+                    if (!this.name || !this.price || !this.description || !this.pages || !this.genre || !this.capacity || !this.capacitySold) {
                         this.errors.submit = "Check all the fields not to be empty!";
                         return;
                     }

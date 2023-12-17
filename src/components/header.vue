@@ -44,13 +44,23 @@
               </ul>
             </li>
           </ul>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li v-if="checkUserRole == 'ROLE_ADMIN'" class="nav-item">
+              <router-link to="/dashboard" class="nav-link">DASHBOARD</router-link>
+            </li>
+          </ul>
           <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
             <li v-if="checkUserToken == null" class="nav-item">
               <router-link to="/login" class="nav-link">Sign in</router-link>
             </li>
-            <li v-else class="nav-item">
-              <router-link @click="logout" to="/" class="nav-link">Logout</router-link>
-            </li>
+            <div v-else class="d-flex">
+                <li class="nav-item">
+                    <router-link @click="logout" to="/" class="nav-link">Logout</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link to="/profile" class="nav-link">Profile</router-link>
+                </li>
+            </div>
           </ul>
         </div>
       </div>
@@ -61,6 +71,7 @@
 <script>
     import { defineComponent } from 'vue';
     import { DefaultAPIInstance } from "@/api";
+    import { getUserInfo } from '@/common/decodeJWT';
     
     export default defineComponent({
     name: "HeaderItem",
@@ -74,6 +85,13 @@
         checkUserToken() {
             return this.token;
         },
+        checkUserRole() {
+            if (this.token) {
+                const {userRole} = getUserInfo(this.token);
+                return userRole;
+            }
+            return null;
+        }
     },
     methods: {
         toggleContactsMenu() {
@@ -81,7 +99,7 @@
         },
         logout() {
             localStorage.removeItem('token');
-            //localStorage.removeItem('userRole');
+            localStorage.removeItem('userRole');
             delete DefaultAPIInstance.defaults.headers['authorization'];
 
             this.token = null;
@@ -89,7 +107,7 @@
             this.$router.push({ name: 'Home' });
         }
     },
-    mounted() {
+    created() {
       this.token = localStorage.getItem('token');
     }
 });

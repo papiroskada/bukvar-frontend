@@ -15,78 +15,141 @@
     <hr />
     <div class="row justify-content-center">
       <div
-        v-for="(item, index) in items"
+        v-for="(book, index) in books"
         :key="index"
         class="col-lg-2 col-sm-6 m-lg-3 mb-sm-2"
       >
         <div class="card">
           <img src="@/assets/example.jpg" class="card-img-top" alt="..." />
           <div class="card-body">
-            <h5 class="card-title">Cool book</h5>
+            <h5 class="card-title">{{ book.name }}</h5>
             <p class="card-text">
-              <span class="fw-medium">Author:</span> Plak Plak <br />
-              <span class="fw-medium">Genre:</span> cool
+              <span class="fw-medium">Author:
+                <span v-for="author in getAuthors(book.id)" :key="author">
+                    {{ author }}
+                </span>
+              </span>
+              <br />
+              <span class="fw-medium">Genre: {{ book.genre }}</span>
             </p>
-            <a href="#" class="btn custom-button">View</a>
+            <router-link :to="{name: 'BookInfo', params:{id: book.id}}" class="btn custom-button">View</router-link>
           </div>
         </div>
       </div>
     </div>
+    <!-- <paginator :paginatorName="'books'"/> -->
+    <vue-awesome-paginate
+        :total-items="total"
+        :items-per-page="pageSize"
+        :max-pages-shown="maxPagesShown"
+        v-model="currentPage"
+        :on-click="onClickHandler"
+        paginate-buttons-class="btn-paginator"
+        active-page-class="btn-active"
+        back-button-class="back-btn"
+        next-button-class="next-btn"
+    />
   </div>
 </template>
 <script>
-import { defineComponent } from "vue";
+    import { defineComponent } from "vue";
+    import { DEFAULT_PAGE_SIZE, DEFAULT_MAXPAGE_SHOWN } from '../config';
+    import { BooksAPI } from "@/api/BooksAPI/booksAPI";
+    //import paginator from "@/components/paginator.vue";
 
-export default defineComponent({
-  name: "BooksCatalog",
-  data() {
-    return {
-      items: [
-        { title: "Item 1", description: "Description 1" },
-        { title: "Item 2", description: "Description 2" },
-        { title: "Item 3", description: "Description 3" },
-        { title: "Item 3", description: "Description 3" },
-        { title: "Item 3", description: "Description 3" },
-        { title: "Item 3", description: "Description 3" },
-        { title: "Item 3", description: "Description 3" },
-        { title: "Item 3", description: "Description 3" },
-        { title: "Item 3", description: "Description 3" },
-        { title: "Item 3", description: "Description 3" },
-        { title: "Item 3", description: "Description 3" },
-        { title: "Item 3", description: "Description 3" },
-      ],
-    };
-  },
-});
+    export default defineComponent({
+        name: "BooksCatalog",
+        // components: { paginator },
+        data() {
+            return {
+                books: [],
+                currentPage: 1,
+                pageSize: DEFAULT_PAGE_SIZE,
+                total: 0,
+                maxPagesShown: DEFAULT_MAXPAGE_SHOWN,
+            }
+        },
+        computed: {
+          getAuthorsOfTheBook(bookId) {
+            return this.getAuthors(bookId);
+          }
+        },
+        methods: {
+            async getServerResponseForPaginator() {
+                const response = await BooksAPI.booksWithPagination({ currentPage: this.currentPage, pageSize: this.pageSize });
+                if (response && response.data) {
+                    this.books = response.data;
+                }
+                
+                return this.total = response?.data.length || 0;
+            },
+            async onClickHandler(page) {
+                this.currentPage = page;
+                this.$router.push({ query: { page: this.currentPage } });
+                await this.getServerResponseForPaginator();
+            },
+            async getAuthors(bookId) {
+                //console.log(bookId);
+                const res = await BooksAPI.bookAuthors(bookId);
+                //console.log(res)
+                let a = res?.data?.map(author => author.name) || [];
+                //console.log(a)
+                return a;
+            }
+        },
+        async mounted() {
+            this.currentPage = parseInt(this.$route.query.page, 10) || 1;
+            await this.getServerResponseForPaginator();
+        }
+    });
 </script>
 <style scoped>
-.container {
-  margin: 20px auto;
-  background-color: #ffffff;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
-    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
-}
-.search-bar {
-  width: 70%;
-  margin: auto;
-}
-.custom-button {
-  background-color: rgb(193, 136, 80);
-  color: white;
-  font-weight: 600;
-}
-.custom-button:hover {
-  background-color: rgb(174, 122, 70);
-  color: white;
-}
-@media (max-width: 768px) {
-  .search-bar {
-    width: 90%;
+    .container {
+    margin: 20px auto;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+        rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    }
+    .search-bar {
+    width: 70%;
     margin: auto;
-  }
-  .card-img-top {
-    max-width: 80%;
-    margin: 5px auto;
-  }
-}
+    }
+    .custom-button {
+    background-color: rgb(193, 136, 80);
+    color: white;
+    font-weight: 600;
+    }
+    .custom-button:hover {
+    background-color: rgb(174, 122, 70);
+    color: white;
+    }
+    @media (max-width: 768px) {
+    .search-bar {
+        width: 90%;
+        margin: auto;
+    }
+    .card-img-top {
+        max-width: 80%;
+        margin: 5px auto;
+    }
+    }
+    .btn-paginator {
+        height: 40px;
+        width: 40px;
+        border: none;
+        margin-inline: 5px;
+        cursor: pointer;
+    }
+    .back-btn {
+        background-color: black;
+        color: #fff;
+    }
+    .next-btn {
+        background-color: black;
+        color: #fff;
+    }
+    .btn-active {
+        background-color: gray;
+        color: white;
+    }
 </style>
