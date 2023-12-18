@@ -37,9 +37,6 @@
                 Characteristic
             </th>
             <th scope="col">
-                Edit
-            </th>
-            <th scope="col">
               Delete
             </th>
           </tr>
@@ -57,13 +54,6 @@
             </td>
             <td>
               <div>{{ author.characteristic }}</div>
-            </td>
-            <td>
-                <RouterLink :to="{name: 'DashboardUpdateAuthor', params:{id: author.id}}">
-                    <button class="actions actions__edit">
-                        Edit
-                    </button>
-                </RouterLink>
             </td>
             <td>
                 <button class="actions actions__delete" 

@@ -4,16 +4,16 @@ import Home from "@/pages/home.vue";
 import Login from "@/pages/login.vue";
 import BooksCatalog from "@/pages/books.vue";
 import FAQ from "@/pages/faq.vue";
-import Author from "@/pages/author.vue";
+import AuthorInfo from "@/pages/authorInfo.vue";
 import Profile from "@/pages/profile.vue";
 import Dashboard from "@/pages/Dashboard/dashboard.vue";
 import DashboardAuthors from "@/pages/Dashboard/Authors/authors";
-import DashboardUpdateAuthor from "@/pages/Dashboard/Authors/updateAuthor";
 import DashboardAddAuthor from "@/pages/Dashboard/Authors/addAuthor";
 import DashboardBooks from "@/pages/Dashboard/Books/books";
 import DashboardUpdateBook from "@/pages/Dashboard/Books/updateBook";
 import DashboardAddBook from "@/pages/Dashboard/Books/addBook";
 import BookInfo from '../pages/bookInfo.vue';
+import ProfileUpdate from '../pages/profileUpdate.vue';
 
 /* eslint-disable */
 const authGuard = (to, from, next) => {
@@ -49,12 +49,12 @@ const routes = [
   { path: "/books", name: "BooksCatalog", component: BooksCatalog, beforeEnter: authGuard },
   { path: "/books/:id", name: "BookInfo", component: BookInfo, props: true, beforeEnter: authGuard },
   { path: "/faq", name: "FAQ", component: FAQ },
-  { path: "/authors/:id", name: "Author", component: Author, beforeEnter: authGuard },
+  { path: "/authors/:id", name: "AuthorInfo", component: AuthorInfo, beforeEnter: authGuard, props: true },
   { path: "/profile", name: "Profile", component: Profile, beforeEnter: authGuard },
-  { path: "/registration", name: "Registration", component: Registration, beforeEnter: isAuthorized },
+  { path: "/profile/update", name: "ProfileUpdate", component: ProfileUpdate, beforeEnter: authGuard, props: true },
+  { path: "/registration", name: "Registration", component: Registration, },
   { path: "/dashboard", name: "Dashboard", component: Dashboard, beforeEnter: managerAuthGuard },
   { path: "/dashboard/authors", name: "DashboardAuthors", component: DashboardAuthors, beforeEnter: managerAuthGuard },
-  { path: "/dashboard/updateAuthors/:id", name: "DashboardUpdateAuthor", component: DashboardUpdateAuthor, props: true, beforeEnter: managerAuthGuard },
   { path: "/dashboard/addAuthor", name: "DashboardAddAuthor", component: DashboardAddAuthor, beforeEnter: managerAuthGuard },
   { path: "/dashboard/books", name: "DashboardBooks", component: DashboardBooks, beforeEnter: managerAuthGuard },
   { path: "/dashboard/updateBook/:id", name: "DashboardUpdateBook", component: DashboardUpdateBook, props: true, beforeEnter: managerAuthGuard },

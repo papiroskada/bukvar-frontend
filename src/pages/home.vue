@@ -14,7 +14,7 @@
         innovation and streamlined operations.
       </p>
     </div>
-    <div class="login">
+    <div v-if="checkUserToken == null" class="login">
       <div class="row">
         <div class="sign-in col-7"><LogIn /></div>
         <div class="sign-up col-3">
@@ -38,6 +38,16 @@
   export default defineComponent({
     name: "HomeView",
     components: { LogIn, Carousel },
+    data() {
+      return {
+        //token: null
+      }
+    },
+    computed: {
+        checkUserToken() {
+            return localStorage.getItem('token');
+        },
+    },
   });
   // TopBooks,
 </script>

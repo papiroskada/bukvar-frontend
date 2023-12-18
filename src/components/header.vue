@@ -103,8 +103,11 @@
             delete DefaultAPIInstance.defaults.headers['authorization'];
 
             this.token = null;
-            
+
             this.$router.push({ name: 'Home' });
+            if (window.location.pathname == '/') {
+              this.$router.go();
+            }
         }
     },
     created() {

@@ -10,6 +10,13 @@
         <li>Price: {{ book.price }}</li>
         <li>Capacity: {{ book.capacity }}</li>
         <li>Capacity Sold: {{ book.capacitySold }}</li>
+        <li>Authors: 
+          <span v-for="author in authors" :key="author.id">
+            <li>
+              <router-link :to="{name: 'AuthorInfo', params:{id: author.id}}">{{ author.name }}</router-link>
+            </li>
+          </span>
+        </li>
       </ul>
     </div>
   </div>
@@ -28,13 +35,19 @@
         },
         data() {
             return {
-                book: {}
+                book: {},
+                authors: {}
             }
         },
         async mounted() {
             const res = await BooksAPI.book(this.id);
             if (res && res.data) {
                 this.book = res.data;
+            }
+
+            const authorsRes = await BooksAPI.bookAuthors(this.id);
+            if (authorsRes && authorsRes.data) {
+              this.authors = authorsRes.data;
             }
         }
     })

@@ -107,7 +107,7 @@
                 class="btn custom-btn"
                 :disabled="!isFormValid"
               >
-                Sign in
+                Register
               </button>
             </div>
           </form>
@@ -137,8 +137,13 @@ export default {
       },
       errors: {},
       isFormValid: false,
-      avatarSrc: require("@/assets/avatar.svg"),
+      //avatarSrc: require("@/assets/avatar.svg"),
     };
+  },
+  computed: {
+    hasErrors() {
+      return Object.values(this.errors).some(error => error !== '');
+    },
   },
   watch: {
     formData: {
@@ -253,7 +258,8 @@ export default {
     },
     async submitForm() {
         try {
-            if (this.validateForm()) {
+            if (!this.hasErrors) {
+              if (this.validateForm()) {
                 const requestData = {
                     username: this.formData.username,
                     name: this.formData.name,
@@ -269,6 +275,7 @@ export default {
                     this.resetForm();
                     this.$router.push({name: 'Login'});
                 }
+            }
             }
         } catch (err) {
             console.log(err);

@@ -70,9 +70,9 @@
             }
         },
         computed: {
-          getAuthorsOfTheBook(bookId) {
-            return this.getAuthors(bookId);
-          }
+          // getAuthorsOfTheBook(bookId) {
+          //   return this.getAuthors(bookId);
+          // }
         },
         methods: {
             async getServerResponseForPaginator() {
@@ -80,8 +80,9 @@
                 if (response && response.data) {
                     this.books = response.data;
                 }
+                const booksResponse = await BooksAPI.books();
                 
-                return this.total = response?.data.length || 0;
+                return this.total = booksResponse?.data.length || 0;
             },
             async onClickHandler(page) {
                 this.currentPage = page;
@@ -93,7 +94,7 @@
                 const res = await BooksAPI.bookAuthors(bookId);
                 //console.log(res)
                 let a = res?.data?.map(author => author.name) || [];
-                //console.log(a)
+                console.log(a)
                 return a;
             }
         },

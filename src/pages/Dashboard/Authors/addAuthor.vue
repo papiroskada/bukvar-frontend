@@ -63,7 +63,6 @@
         },
         computed: {
             hasErrors() {
-                console.log(Object.values(this.errors).some(error => error !== ''))
                 return Object.values(this.errors).some(error => error !== '');
             },
         },
@@ -85,7 +84,6 @@
                 }
             },
             validateName(name) {
-                console.log(name)
                 let error = '';
                 const ukrainianLettersRegex = /^[A-Z][a-zA-Z]{2,}/;
                 if (!ukrainianLettersRegex.test(name)) {

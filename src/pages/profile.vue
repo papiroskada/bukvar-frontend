@@ -10,6 +10,7 @@
         <li>Cellphone: {{ user.phone }}</li>
         <li>Birth date: {{ formatDate(user.birthdate) }}</li>
       </ul>
+      <router-link :to="{name: 'ProfileUpdate'}" class="btn btn-primary btn-lg ml-5">Update Information</router-link>
     </div>
   </div>
 </template>

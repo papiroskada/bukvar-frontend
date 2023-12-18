@@ -91,7 +91,7 @@
             </td>
             <td>
                 <button class="actions actions__delete" 
-                        @click="confirmDelete(author.id)">
+                        @click="confirmDelete(book.id)">
                     Delete
                 </button>
             </td>
