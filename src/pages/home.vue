@@ -9,7 +9,7 @@
         management and bookkeeping, providing a comprehensive solution for the
         modern publishing industry. With our CRM, you can effortlessly navigate
         through author relationships, track book sales, and manage financial
-        transactions, allowing you to focus on what matters most – bringing
+        transactions, allowing you to focus on what matters most - bringing
         exceptional stories to the world. Join us on this journey of literary
         innovation and streamlined operations.
       </p>
@@ -23,24 +23,24 @@
         </div>
       </div>
     </div>
-    <!-- <div class="top-books mt-3">
+    <div class="top-books mt-3">
       <TopBooks />
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
   import { defineComponent } from "vue";
-  // import TopBooks from "@/components/top-books.vue";
+  import TopBooks from "@/components/top-books.vue";
   import Carousel from "@/components/carousel.vue";
   import LogIn from "@/components/log-form.vue";
 
   export default defineComponent({
     name: "HomeView",
-    components: { LogIn, Carousel },
+    components: { LogIn, Carousel, TopBooks },
     data() {
       return {
-        //token: null
+        
       }
     },
     computed: {

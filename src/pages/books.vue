@@ -25,9 +25,7 @@
             <h5 class="card-title">{{ book.name }}</h5>
             <p class="card-text">
               <span class="fw-medium">Author:
-                <span v-for="author in getAuthors(book.id)" :key="author">
-                    {{ author }}
-                </span>
+                <span>{{ getAuthors(authors[index]) }}</span>
               </span>
               <br />
               <span class="fw-medium">Genre: {{ book.genre }}</span>
@@ -37,7 +35,6 @@
         </div>
       </div>
     </div>
-    <!-- <paginator :paginatorName="'books'"/> -->
     <vue-awesome-paginate
         :total-items="total"
         :items-per-page="pageSize"
@@ -55,14 +52,13 @@
     import { defineComponent } from "vue";
     import { DEFAULT_PAGE_SIZE, DEFAULT_MAXPAGE_SHOWN } from '../config';
     import { BooksAPI } from "@/api/BooksAPI/booksAPI";
-    //import paginator from "@/components/paginator.vue";
 
     export default defineComponent({
         name: "BooksCatalog",
-        // components: { paginator },
         data() {
             return {
                 books: [],
+                authors: [],
                 currentPage: 1,
                 pageSize: DEFAULT_PAGE_SIZE,
                 total: 0,
@@ -70,15 +66,19 @@
             }
         },
         computed: {
-          // getAuthorsOfTheBook(bookId) {
-          //   return this.getAuthors(bookId);
-          // }
         },
         methods: {
             async getServerResponseForPaginator() {
                 const response = await BooksAPI.booksWithPagination({ currentPage: this.currentPage, pageSize: this.pageSize });
                 if (response && response.data) {
                     this.books = response.data;
+                    for (const book of this.books) {
+                      const res = await BooksAPI.bookAuthors(book.id);
+                      if (res && res.data) {
+                          let authors = res.data.map(author => author.name);
+                          this.authors.push(authors);
+                    }
+                }
                 }
                 const booksResponse = await BooksAPI.books();
                 
@@ -89,13 +89,8 @@
                 this.$router.push({ query: { page: this.currentPage } });
                 await this.getServerResponseForPaginator();
             },
-            async getAuthors(bookId) {
-                //console.log(bookId);
-                const res = await BooksAPI.bookAuthors(bookId);
-                //console.log(res)
-                let a = res?.data?.map(author => author.name) || [];
-                console.log(a)
-                return a;
+            getAuthors(authorsArr) {
+                return authorsArr.join(', ');
             }
         },
         async mounted() {

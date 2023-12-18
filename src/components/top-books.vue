@@ -4,16 +4,16 @@
       <h1 class="text-center">Top-3 books of the week</h1>
       <div class="container">
         <div class="row justify-content-center">
-          <div v-for="(item, index) in items" :key="index" class="col-lg-3 m-3">
+          <div v-for="(book, index) in getTopBooks" :key="index" class="col-lg-3 m-3">
             <div class="card">
               <img src="@/assets/example.jpg" class="card-img-top" alt="..." />
               <div class="card-body">
-                <h5 class="card-title">Cool book</h5>
+                <h5 class="card-title">{{ book.name }}</h5>
                 <p class="card-text">
-                  Author: Plak Plak <br />
-                  Genre: cool
+                  <span>Author: {{ getAuthors(authors[index]) }}</span> <br />
+                  Genre: {{ book.genre }}
                 </p>
-                <a href="#" class="btn custom-button">View</a>
+                <router-link :to="{name: 'BookInfo', params:{id: book.id}}" class="btn custom-button">View</router-link>
               </div>
             </div>
           </div>
@@ -23,17 +23,43 @@
   </div>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      items: [
-        { title: "Item 1", description: "Description 1" },
-        { title: "Item 2", description: "Description 2" },
-        { title: "Item 3", description: "Description 3" },
-      ],
+    import { BooksAPI } from '@/api/BooksAPI/booksAPI';
+
+    export default {
+        data() {
+            return {
+                books: [],
+                authors: []
+            }
+        },
+        computed: {
+            getTopBooks() {
+                const books = [...this.books];
+                books.sort((a, b) => b.capacitySold - a.capacitySold);
+                const top3Books = books.slice(0,3);
+                return top3Books;
+            },
+        },
+        methods: {
+            getAuthors(authorsArr) {
+                return authorsArr.join(', ');
+            }
+        },   
+        async created() {
+            const res = await BooksAPI.books();
+            if (res && res.data) {
+                this.books = res.data;
+                const topBooks = this.getTopBooks;
+                for (const book of topBooks) {
+                    const res = await BooksAPI.bookAuthors(book.id);
+                    if (res && res.data) {
+                        let a = res.data.map(author => author.name);
+                        this.authors.push(a);
+                    }
+                }
+            }
+        }
     };
-  },
-};
 </script>
 <style scoped>
 .custom-button {
