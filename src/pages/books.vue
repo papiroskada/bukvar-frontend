@@ -97,12 +97,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.btn-paginator {
-  border: none !important;
-  color: aqua;
-  background-color: aqua;
-}
-
 .container {
   margin: 20px auto;
   background-color: #ffffff;
@@ -111,7 +105,7 @@ export default defineComponent({
   min-height: 73vh;
 }
 .card {
-  min-height: 220px;
+  min-height: 230px;
   position: relative;
 }
 .search-bar {

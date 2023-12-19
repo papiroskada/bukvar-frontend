@@ -180,7 +180,7 @@ export default defineComponent({
     },
     validateName(name) {
       let error = "";
-      const ukrainianLettersRegex = /^[A-Z][a-zA-Z]{2,}/;
+      const ukrainianLettersRegex = /^[A-Z][a-zA-Z]/;
       if (!ukrainianLettersRegex.test(name)) {
         error = `The field should be written in English and start with a capital letter`;
       }

@@ -11,10 +11,11 @@
           >
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">{{ book.name }}</h5>
+                <h5 class="card-title fw-bold">{{ book.name }}</h5>
                 <p class="card-text">
-                  <span>Author: {{ getAuthors(authors[index]) }}</span> <br />
-                  Genre: {{ book.genre }}
+                  <span class="fw-medium">Author: </span>
+                  {{ getAuthors(authors[index]) }} <br />
+                  <span class="fw-medium">Genre: </span>{{ book.genre }}
                 </p>
                 <router-link
                   :to="{ name: 'BookInfo', params: { id: book.id } }"
@@ -81,10 +82,19 @@ export default {
 .card {
   min-height: 300px;
   margin-top: 30px;
+  position: relative;
 }
 .btn {
+  width: 100px;
   display: block;
-  margin: auto;
+  margin-bottom: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgb(193, 136, 80);
+  color: white;
+  font-weight: 600;
 }
 @media (max-width: 768px) {
   h1 {

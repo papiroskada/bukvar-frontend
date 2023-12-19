@@ -20,7 +20,10 @@ export default defineComponent({
   components: { Header, Footer },
   watch: {
     $route(to) {
-      this.isAuthPage = to.name === "Registration" || to.name === "Login";
+      this.isAuthPage =
+        to.name === "Registration" ||
+        to.name === "ProfileUpdate" ||
+        to.name === "Login";
       this.isDashboard =
         to.name === "DashboardAuthors" ||
         to.name === "DashboardAddAuthor" ||
@@ -45,4 +48,5 @@ body {
 .btn-active {
   background-color: rgb(223, 223, 223);
 }
+
 </style>
