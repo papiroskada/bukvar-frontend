@@ -4,16 +4,23 @@
       <h1 class="text-center">Top-3 books of the week</h1>
       <div class="container">
         <div class="row justify-content-center">
-          <div v-for="(book, index) in getTopBooks" :key="index" class="col-lg-3 m-3">
+          <div
+            v-for="(book, index) in getTopBooks"
+            :key="index"
+            class="col-lg-3"
+          >
             <div class="card">
-              <img src="@/assets/example.jpg" class="card-img-top" alt="..." />
               <div class="card-body">
                 <h5 class="card-title">{{ book.name }}</h5>
                 <p class="card-text">
                   <span>Author: {{ getAuthors(authors[index]) }}</span> <br />
                   Genre: {{ book.genre }}
                 </p>
-                <router-link :to="{name: 'BookInfo', params:{id: book.id}}" class="btn custom-button">View</router-link>
+                <router-link
+                  :to="{ name: 'BookInfo', params: { id: book.id } }"
+                  class="btn custom-button"
+                  >View</router-link
+                >
               </div>
             </div>
           </div>
@@ -23,43 +30,43 @@
   </div>
 </template>
 <script>
-    import { BooksAPI } from '@/api/BooksAPI/booksAPI';
+import { BooksAPI } from "@/api/BooksAPI/booksAPI";
 
-    export default {
-        data() {
-            return {
-                books: [],
-                authors: []
-            }
-        },
-        computed: {
-            getTopBooks() {
-                const books = [...this.books];
-                books.sort((a, b) => b.capacitySold - a.capacitySold);
-                const top3Books = books.slice(0,3);
-                return top3Books;
-            },
-        },
-        methods: {
-            getAuthors(authorsArr) {
-                return authorsArr.join(', ');
-            }
-        },   
-        async created() {
-            const res = await BooksAPI.books();
-            if (res && res.data) {
-                this.books = res.data;
-                const topBooks = this.getTopBooks;
-                for (const book of topBooks) {
-                    const res = await BooksAPI.bookAuthors(book.id);
-                    if (res && res.data) {
-                        let a = res.data.map(author => author.name);
-                        this.authors.push(a);
-                    }
-                }
-            }
-        }
+export default {
+  data() {
+    return {
+      books: [],
+      authors: [],
     };
+  },
+  computed: {
+    getTopBooks() {
+      const books = [...this.books];
+      books.sort((a, b) => b.capacitySold - a.capacitySold);
+      const top3Books = books.slice(0, 3);
+      return top3Books;
+    },
+  },
+  methods: {
+    getAuthors(authorsArr) {
+      return authorsArr.join(", ");
+    },
+  },
+  async created() {
+    const res = await BooksAPI.books();
+    if (res && res.data) {
+      this.books = res.data;
+      const topBooks = this.getTopBooks;
+      for (const book of topBooks) {
+        const res = await BooksAPI.bookAuthors(book.id);
+        if (res && res.data) {
+          let a = res.data.map((author) => author.name);
+          this.authors.push(a);
+        }
+      }
+    }
+  },
+};
 </script>
 <style scoped>
 .custom-button {
@@ -70,6 +77,14 @@
 .custom-button:hover {
   background-color: rgb(174, 122, 70);
   color: white;
+}
+.card {
+  min-height: 300px;
+  margin-top: 30px;
+}
+.btn {
+  display: block;
+  margin: auto;
 }
 @media (max-width: 768px) {
   h1 {

@@ -119,7 +119,6 @@
 
 <script>
 import { mask } from "vue-the-mask";
-//import axios from "axios";
 import { AuthAPI } from "@/api/AuthAPI/authAPI";
 
 export default {
@@ -137,12 +136,11 @@ export default {
       },
       errors: {},
       isFormValid: false,
-      //avatarSrc: require("@/assets/avatar.svg"),
     };
   },
   computed: {
     hasErrors() {
-      return Object.values(this.errors).some(error => error !== '');
+      return Object.values(this.errors).some((error) => error !== "");
     },
   },
   watch: {
@@ -154,16 +152,6 @@ export default {
     },
   },
   methods: {
-    // handleAvatarChange(event) {
-    //   const file = event.target.files[0];
-    //   if (file) {
-    //     const reader = new FileReader();
-    //     reader.onload = () => {
-    //       this.avatarSrc = reader.result;
-    //     };
-    //     reader.readAsDataURL(file);
-    //   }
-    // },
     validateField(fieldName) {
       this.errors[fieldName] = "";
 
@@ -187,17 +175,17 @@ export default {
       if (!ukrainianLettersRegex.test(this.formData[fieldName])) {
         this.errors[
           fieldName
-        ] = `Поле повинно бути написане англійською та починатися з великої літери.`;
+        ] = `The field should be written in English and start with a capital letter`;
       } else {
         this.errors[fieldName] = "";
       }
     },
     validateUsername(fieldName) {
-      const usernameRegex = /^[a-zA-Z0-9]+$/;
+      const usernameRegex = /^[a-zA-Z0-9]{5,}$/;
       if (!usernameRegex.test(this.formData[fieldName])) {
         this.errors[
           fieldName
-        ] = `Поле повинно бути написане англійською та може містити цифри.`;
+        ] = `The field must be at lest 4 characters long and should be written in English and may contain numbers`;
       } else {
         this.errors[fieldName] = "";
       }
@@ -208,8 +196,8 @@ export default {
       const age = Math.floor(
         (currentDate - birthdate) / (365.25 * 24 * 60 * 60 * 1000)
       );
-      if (age < 18) {
-        this.errors[fieldName] = "Вам має бути більше 18 років";
+      if (age < 18 || age > 100) {
+        this.errors[fieldName] = "You must be over 18 under 100 years old.";
       } else {
         this.errors[fieldName] = "";
       }
@@ -217,7 +205,7 @@ export default {
     validateEmail(fieldName) {
       const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/;
       if (!emailRegex.test(this.formData[fieldName])) {
-        this.errors[fieldName] = "Введіть коректний email";
+        this.errors[fieldName] = "Please enter a valid email address";
       } else {
         this.errors[fieldName] = "";
       }
@@ -227,7 +215,7 @@ export default {
 
       const phoneRegex = /^380\d{9}$/;
       if (!phoneRegex.test(phoneNumber)) {
-        this.errors[fieldName] = "Невірний формат номеру телефону";
+        this.errors[fieldName] = "Invalid phone number format";
       } else {
         this.errors[fieldName] = "";
       }
@@ -236,14 +224,14 @@ export default {
       const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
       if (!passwordRegex.test(this.formData[fieldName])) {
         this.errors[fieldName] =
-          "Пароль має складатись з 8 символів, в яких присутні спец. символи, цифри, англ. літери великого та малого регістрів.";
+          "The password must be 8 characters long and include special characters, numbers, and both uppercase and lowercase English letters";
       } else {
         this.errors[fieldName] = "";
       }
     },
     validatePasswordConfirm(fieldName) {
       if (this.formData.password !== this.formData.passwordConfirm) {
-        this.errors[fieldName] = "Паролі не співпадають";
+        this.errors[fieldName] = "The passwords do not match";
       } else {
         this.errors[fieldName] = "";
       }
@@ -257,29 +245,29 @@ export default {
       return !isEmptyField;
     },
     async submitForm() {
-        try {
-            if (!this.hasErrors) {
-              if (this.validateForm()) {
-                const requestData = {
-                    username: this.formData.username,
-                    name: this.formData.name,
-                    email: this.formData.email,
-                    password: this.formData.password,
-                    phone: this.formData.phone,
-                    birthdate: this.formData.birthdate,
-                };
+      try {
+        if (!this.hasErrors) {
+          if (this.validateForm()) {
+            const requestData = {
+              username: this.formData.username,
+              name: this.formData.name,
+              email: this.formData.email,
+              password: this.formData.password,
+              phone: this.formData.phone,
+              birthdate: this.formData.birthdate,
+            };
 
-                const res = await AuthAPI.register(requestData);
+            const res = await AuthAPI.register(requestData);
 
-                if (res && res.data) {
-                    this.resetForm();
-                    this.$router.push({name: 'Login'});
-                }
+            if (res && res.data) {
+              this.resetForm();
+              this.$router.push({ name: "Login" });
             }
-            }
-        } catch (err) {
-            console.log(err);
+          }
         }
+      } catch (err) {
+        console.log(err);
+      }
     },
 
     resetForm() {
@@ -294,7 +282,6 @@ export default {
         passwordConfirm: "",
       };
       this.errors = {};
-      //this.avatarSrc = require("@/assets/avatar.svg");
     },
   },
 };
@@ -304,6 +291,7 @@ export default {
 .content {
   background-color: rgb(217, 187, 157);
   margin-top: 0;
+  min-height: 100vh;
 }
 .custom-btn:disabled {
   border: 1px solid rgb(193, 136, 80);
@@ -318,12 +306,6 @@ export default {
   background-color: #ffffff;
   padding: 30px;
   margin: 20px;
-}
-.avatar {
-  max-width: 40%;
-  aspect-ratio: 1/1;
-  max-width: 200px;
-  object-fit: cover;
 }
 .form-text {
   color: rgb(197, 0, 0);

@@ -1,42 +1,46 @@
 <template>
   <div class="content">
-   <div class="container">
-     <div class="row">
-      <div class="col-sm-6 form shadow-sm p-3 bg-body-tertiary rounded">
-        <form @submit.prevent="submitForm">
-         <div class="mb-3">
-           <label for="username" class="form-label">Username</label>
-           <input
-            type="text"
-            class="form-control"
-            id="username"
-            v-model="formData.username"
-            @input="validateField('username')"
-            placeholder="example@ex.com"
-           />
-           <span class="form-text">{{ errors.username }}</span>
-         </div>
-         <div class="mb-3">
-           <label for="password" class="form-label">Password</label>
-           <input
-            type="password"
-            class="form-control"
-            id="password"
-            aria-describedby="passwordHelp"
-            v-model="formData.password"
-            @input="validateField('password')"
-            placeholder="**********"
-           />
-           <!-- <span class="form-text">{{ errors.password }}</span> -->
-         </div>
-         <div class="d-grid gap-2 col-6 mx-auto">
-           <button type="submit" :disabled="!isFormValid" class="btn custom-btn">Log in</button>
-         </div>
-         <span class="form-text">{{ errors.submit }}</span>
-        </form>
+    <div class="container">
+      <div class="row">
+        <div class="form shadow-sm p-3 bg-body-tertiary rounded">
+          <form @submit.prevent="submitForm">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                v-model="formData.username"
+                @input="validateField('username')"
+                placeholder="anton228"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                aria-describedby="passwordHelp"
+                v-model="formData.password"
+                @input="validateField('password')"
+                placeholder="**********"
+              />
+              </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+              <button
+                type="submit"
+                :disabled="!isFormValid"
+                class="btn custom-btn"
+              >
+                Log in
+              </button>
+            </div>
+            <span class="form-text">{{ errors.submit }}</span>
+          </form>
+        </div>
       </div>
-     </div>
-   </div>
+    </div>
   </div>
 </template>
 
@@ -44,116 +48,93 @@
 import { AuthAPI } from "@/api/AuthAPI/authAPI";
 //import { UsersAPI } from "@/api/UsersAPI/usersAPI";
 import { DefaultAPIInstance } from "@/api";
-import { getUserInfo } from '../common/decodeJWT';
+import { getUserInfo } from "../common/decodeJWT";
 
 export default {
   data() {
-   return {
-        formData: {
-            username: "",
-            password: "",
-        },
-        errors: {
-            username: "",
-            password: "",
-            submit: ""
-        },
-        isFormValid: false,
-   };
+    return {
+      formData: {
+        username: "",
+        password: "",
+      },
+      errors: {
+        username: "",
+        password: "",
+        submit: "",
+      },
+      isFormValid: false,
+    };
   },
   watch: {
-   formData: {
-        handler: function () {
-            this.validateForm();
-        },
-        deep: true,
-   },
+    formData: {
+      handler: function () {
+        this.validateForm();
+      },
+      deep: true,
+    },
   },
   methods: {
     validateField(fieldName) {
-        this.errors[fieldName] = "";
-
-        const validationRules = {
-            username: this.validateUsername,
-            password: this.validatePassword
-        };
-
-        if (validationRules[fieldName]) {
-            validationRules[fieldName](fieldName);
-        }
-
-        this.isFormValid = this.validateForm();
+      this.errors[fieldName] = "";
+      this.isFormValid = this.validateForm();
     },
-   validateUsername(fieldName) {
-      const usernameRegex = /^[a-zA-Z0-9]+$/;
-      if (!usernameRegex.test(this.formData[fieldName])) {
-        this.errors[
-          fieldName
-        ] = `Поле повинно бути написане англійською та може містити цифри.`;
-      } else {
-        this.errors[fieldName] = "";
-      }
-    },
-    validatePassword(fieldName) {
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-      if (!passwordRegex.test(this.formData[fieldName])) {
-        this.errors[fieldName] =
-          "Пароль має складатись з 8 символів, в яких присутні спец. символи, цифри, англ. літери великого та малого регістрів.";
-      } else {
-        this.errors[fieldName] = "";
-      }
-    },
+
     validateForm() {
-        const nameIsRequired = this.formData.username.trim() !== "";
-        const passwordIsRequired = this.formData.password.trim() !== "";
+      const nameIsRequired = this.formData.username.trim() !== "";
+      const passwordIsRequired = this.formData.password.trim() !== "";
 
-        const isNameValid = nameIsRequired && this.errors.username == "";
-        const isPasswordValid = passwordIsRequired && this.errors.password == "";
+      const isNameValid = nameIsRequired && this.errors.username == "";
+      const isPasswordValid = passwordIsRequired && this.errors.password == "";
 
-        this.isFormValid = isNameValid && isPasswordValid;
-        return this.isFormValid;
-   },
-   async submitForm() {
-        try {
-            if (this.validateForm()) {
-                if (localStorage.getItem('token') == null) {
-                  const res = await AuthAPI.login(this.formData.username, this.formData.password);
+      this.isFormValid = isNameValid && isPasswordValid;
+      return this.isFormValid;
+    },
+    async submitForm() {
+      try {
+        if (this.validateForm()) {
+          if (localStorage.getItem("token") == null) {
+            const res = await AuthAPI.login(
+              this.formData.username,
+              this.formData.password
+            );
 
-                  if (res && res.data) {
-                      const token = res.data.token;
-                      
-                      localStorage.setItem('token', token);
-                      DefaultAPIInstance.defaults.headers['authorization'] = `Bearer ${token}`;
+            if (res && res.data) {
+              const token = res.data.token;
 
-                      const {userRole} = getUserInfo(token);
-                      localStorage.setItem('userRole', userRole);
+              localStorage.setItem("token", token);
+              DefaultAPIInstance.defaults.headers[
+                "authorization"
+              ] = `Bearer ${token}`;
 
-                      this.$router.push({name: 'Home'});
-                      if (window.location.pathname !== '/login') {
-                        this.$router.go();
-                      }
-                      this.resetForm();
-                  }
-                } else {
-                  this.errors.submit = "You are already logged in";
-                }
+              const { userRole } = getUserInfo(token);
+              localStorage.setItem("userRole", userRole);
+
+              this.$router.push({ name: "Home" });
+              if (window.location.pathname !== "/login") {
+                this.$router.go();
+              }
+              this.resetForm();
             }
-        } catch (err) {
-            console.log(err)
+          } else {
+            this.errors.submit = "You are already logged in";
+          }
         }
-   },
+      } catch (err) {
+        console.log(err);
+      }
+    },
 
-   resetForm() {
-        this.isFormValid = false;
-        this.formData = {
-            username: "",
-            password: "",
-        };
-        this.errors = {
-            username: "",
-            password: "",
-        };
-   },
+    resetForm() {
+      this.isFormValid = false;
+      this.formData = {
+        username: "",
+        password: "",
+      };
+      this.errors = {
+        username: "",
+        password: "",
+      };
+    },
   },
 };
 </script>
@@ -161,8 +142,6 @@ export default {
 <style scoped>
 .form {
   background-color: #ffffff;
-  margin-left: auto;
-  margin-right: 0;
 }
 .custom-btn:disabled {
   border: 1px solid rgb(193, 136, 80);

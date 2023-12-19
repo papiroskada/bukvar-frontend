@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <LogForm />
+  <div class="content">
+    <div class="log-form">
+      <LogForm />
+    </div>
   </div>
 </template>
 
@@ -13,3 +15,21 @@ export default defineComponent({
   components: { LogForm },
 });
 </script>
+<style scoped>
+.content {
+  background-color: rgb(217, 187, 157);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.log-form {
+  margin: auto;
+  width: 30%;
+}
+
+@media (max-width: 768px) {
+  .log-form {
+    width: 90%;
+  }
+}
+</style>
